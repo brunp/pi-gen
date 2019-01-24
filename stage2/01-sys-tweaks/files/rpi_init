@@ -1,0 +1,42 @@
+#!/bin/bash
+
+cat <<\EOF > /etc/rc.local
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+exit 0
+EOF
+
+####################################################
+#  !!! DO NOT CHANGE ANYTHING ABOVE THIS LINE !!!  #
+####################################################
+
+echo "This is a custom script that is run the first time that the PI device is launched." >> var/log/custom-install.log
+echo "The only evidence that should remain is the log file that should be stored in custom-install.log" >> var/log/custom-install.log
+
+####################################################
+#  !!! DO NOT CHANGE ANYTHING BELOW THIS LINE !!!  #
+####################################################
+
+rm /boot/rpi_init
+
+source /etc/rc.local
+exit 0
+
+
